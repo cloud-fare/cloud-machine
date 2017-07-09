@@ -14,7 +14,14 @@ Goals:
         * Privileged jobs can not be trusted to leave the state of persistent drive mounts
           in a known good state (free of malware, etc)
 * move config options out of makefiles into a cloud-machine config-file
-    * allow, in order of load, global, user, project specific cloud-machine config-files, followed by command line options
+    * allow, in order of load:
+        * global cloud-machine config-files,
+        * user cloud-machine config-files,
+        * project specific cloud-machine config-files,
+        * followed by environment variables
+        * followed by command line options
+        * followed by cloud-init URL contents
+        * followed by persistent drives in a machine with filesystem label "CLOUD-INIT"
     * default: allow all settings from earlier loaded profiles to be inherited unless specifically excluded or overridden.
 * config options to include machine resources
 * config options to be provided to the remote machine as its cloud-init defaults
@@ -37,14 +44,18 @@ cloud-machine:
                     kernel-module: zfs
                 overwrite:
                 wipe-on-boot:
+                boot-partition : true
             volume2:
-            
+               devicepath : /dev/sr1
+               readonly : true
+               filesystem : iso9660
         nic:
         cloud-init-url:
 rancher:
 
 docker:
 
+...
 ```
 
 
