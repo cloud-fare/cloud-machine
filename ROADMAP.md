@@ -1,3 +1,54 @@
+# Cloud-Machine Roadmap
+
+Goals:
+* to make Cloud-Machine the best command line resource for a production orchestration engine to use when spinning up new machines.
+* be really good at autoscale
+    * up can be optimized to use an snapshot of an already launched machine
+    * down needs to gracefully stop a machine and wait for all queues to flush
+* be really good at reprovisioning an existing machine
+* allow for reimaging of a machine after running privileged containers
+  in a shared environment while maintaining other id and state information such as IP addresses
+    * specific use cases
+        * many cloud providers have minimum billing increments far larger
+          than the lifecycle of individual privileged jobs.
+        * Privileged jobs can not be trusted to leave the state of persistent drive mounts
+          in a known good state (free of malware, etc)
+* move config options out of makefiles into a cloud-machine config-file
+    * allow, in order of load, global, user, project specific cloud-machine config-files, followed by command line options
+    * default: allow all settings from earlier loaded profiles to be inherited unless specifically excluded or overridden.
+* config options to include machine resources
+* config options to be provided to the remote machine as its cloud-init defaults
+* drivers to make best efforts to implement all appropriate options.
+* Cloud-Machine to report as errors mandatory settings not supported by a driver
+    * command line option to audit configuration and dump the synthesized configuration
+
+
+```yml
+#cloud-init
+cloud-machine:
+    resources:
+        ram: 4 # GB, floating point, will be rounded up to next available unit from driver)
+        cpus: 2
+        disks:
+            volume1:
+                devicepath : /dev/sda
+                allocation: 20GB
+                filesystem: zfs
+                    kernel-module: zfs
+                overwrite:
+                wipe-on-boot:
+            volume2:
+            
+        nic:
+        cloud-init-url:
+rancher:
+
+docker:
+
+```
+
+
+
 # Machine Roadmap
 
 Machine currently works really well for development and test environments. The
